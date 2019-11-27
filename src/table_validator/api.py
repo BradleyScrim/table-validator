@@ -72,7 +72,7 @@ def _consume_parsed_template(rules: Rules) -> Tuple[Mapping[int, Mapping[int, Li
 
     rule_dict = {k: dict(v) for k, v in rule_dict.items()}
     print(f'{EMOJI} repeats', repeats)
-    print(f'{EMOJI} rules', rule_dict)
+    print(rule_dict, '{EMOJI} rules')
     return rule_dict, repeats
 
 
