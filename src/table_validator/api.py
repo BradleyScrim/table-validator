@@ -3,6 +3,7 @@
 """API for ``table_validator``."""
 
 import logging
+import os
 from collections import defaultdict
 from functools import partial
 from typing import Any, Callable, Iterable, List, Mapping, Set, TextIO, Tuple, Union
@@ -163,6 +164,7 @@ def parse_tsv(file: TextIO) -> List[List[str]]:
 
 
 if __name__ == '__main__':
-    with open('/Users/cthoyt/dev/income2019/tests/repeat_template.tsv') as _file:
+
+    with open('os.path.dirname(os.path.abspath(__file__))' + '/tests/repeat_template.tsv') as _file:
         for x in parse_template(parse_tsv(_file)):
             print(x)
