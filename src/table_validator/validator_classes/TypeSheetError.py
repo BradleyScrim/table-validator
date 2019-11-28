@@ -8,4 +8,4 @@ class TypeSheetError(SheetError):
         self.cls = cls
 
     def message(self):
-        return "%d, %d: %s should have been of type %s" %(self.row,self.column,self.value,self.cls)
+        return "%d, %d: String '%s' is not of type %s" %(self.row,self.column,self.value,self.cls)

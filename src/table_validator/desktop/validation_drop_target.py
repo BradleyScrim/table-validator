@@ -120,7 +120,10 @@ class ValidationDropTarget(QWidget):
 
         self.label_url.setText("File examined: %s" % urls[0].toString())
 
-        successfullyValidated,_ = self.validate(candidate)
+        successfullyValidated,errorObjects = self.validate(candidate)
+
+        for i in errorObjects:
+            print(i.message())
 
         if successfullyValidated:
             self.label_success.setText(

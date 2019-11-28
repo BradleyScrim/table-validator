@@ -13,6 +13,6 @@ class TypeSheetValidator(SheetValidator):
         try:
             self.cls(value)
         except ValueError:
-            return False,TypeSheetError(self.row,self.column,"Wrong data type. Expected:", self.cls)
+            return False,TypeSheetError(self.row,self.column,value,self.cls)
         else:
             return True,NoError(self.row,self.column,value);
