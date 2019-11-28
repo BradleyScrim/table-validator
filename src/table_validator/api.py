@@ -86,8 +86,8 @@ def _consume_parsed_template(rules: Rules) -> Tuple[Mapping[int, Mapping[int, Li
             _, line = rule
             repeats.add(line)
         elif isinstance(rule, list):
-            for v, i, j in rule:
-                rule_dict[i][j].append(v)
+            for o in rule:
+                rule_dict[o.row][o.column].append(o)
 
     rule_dict = {k: dict(v) for k, v in rule_dict.items()}
     print( repeats, '{EMOJI} repeats')
