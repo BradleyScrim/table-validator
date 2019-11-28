@@ -72,13 +72,14 @@ class MandatorySheetValidator(SheetValidator):
         super(self,row,column)
 
     def validate(self):
-        return True;SheetError(row,column,value)
+        return True,SheetError(row,column,value)
 
 
 class TypeSheetValidator(SheetValidator):
-# TODO an integer/float/string must be present
+    # TODO an integer/float/string must be present
     def something():
         return 0
+
 
 class SmartChemicalCompoundSheetValidator(SheetValidator):
 # TODO checks that something is a compound
