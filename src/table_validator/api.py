@@ -6,7 +6,10 @@ import logging
 from collections import defaultdict
 from functools import partial
 from typing import Any, Callable, Iterable, List, Mapping, Set, TextIO, Tuple, Union
-from . import validator_classes
+
+from validator_classes import SheetError,IntSheetValidator,FloatSheetValidator,MandatorySheetValidator
+
+
 
 import pandas as pd
 
@@ -77,16 +80,16 @@ def parse_template(template) -> Rules:
             # TODO: here we have to create the right NEW validators
             if command.startswith('INT'):
                 yield [
-                    (required_validator, i, j),
-                    (int_validator, i, j),
+                    MandatorySheetValidator(i,j),
+                    IntSheetValidator(i, j),
                 ]
             elif command.startswith('FLOAT'):
                 yield [
-                    (required_validator, i, j),
-                    (float_validator, i, j),
+                    MandatorySheetValidator(i, j),
+                    FloatSheetValidator(i, j)
                 ]
             elif command.startswith('STR'):
-                yield [(required_validator, i, j)]
+                yield [MandatorySheetValidator(i, j)]
             elif command.startswith('REPEAT_ROW'):
                 yield 'REPEAT', i
 
