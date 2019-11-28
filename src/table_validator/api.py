@@ -6,6 +6,7 @@ import logging
 from collections import defaultdict
 from functools import partial
 from typing import Any, Callable, Iterable, List, Mapping, Set, TextIO, Tuple, Union
+from . import validator_classes
 
 import pandas as pd
 
@@ -51,40 +52,7 @@ class TypeSheetError(SheetError):
         return "%d, %d: %s should have been of type %s" %(row,column,value,cls)
 
 
-# base class
-class SheetValidator:
 
-    def __init__(self,row,column):
-            self.row = row
-            self.column = column
-    # the location this is responsible for in the sheet
-    def getLocation(self):
-        return self.row,self.column
-
-    # this does the actual validation
-    # this empty validator always succeeds
-    def validate(self,value):
-        return True,SheetError(row,column,value)
-
-class MandatorySheetValidator(SheetValidator):
-# TODO a non-null value must be present
-    def __init__(self,row,column):
-        super(self,row,column)
-
-    def validate(self):
-        return True,SheetError(row,column,value)
-
-
-class TypeSheetValidator(SheetValidator):
-    # TODO an integer/float/string must be present
-    def something():
-        return 0
-
-
-class SmartChemicalCompoundSheetValidator(SheetValidator):
-# TODO checks that something is a compound
-    def somethingElse():
-        return 0
 
 
 # TODO: Replace with objects
