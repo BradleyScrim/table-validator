@@ -5,7 +5,7 @@ from .SheetValidator import SheetValidator
 class MandatorySheetValidator(SheetValidator):
 # TODO a non-null value must be present
     def __init__(self,row,column):
-        super(self,row,column)
+        super().__init__(row,column)
 
     def validate(self,value):
         if(value):

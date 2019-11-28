@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from .SheetError import SheetError
+
 # base class
 class SheetValidator(object):
     def __init__(self,row,column):

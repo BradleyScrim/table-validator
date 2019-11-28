@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-class NoError:
-    def __init__(self,row,column,value):
-        self.row = row;
-        self.column = column
-        self.value = value
+from .SheetError import SheetError
+
+class NoError(SheetError):
+    def __init__(self,row,column):
+        super().__init__(row,column)
 
     def message(self):
         return "Everything fine at %d, %d: %s" %(row,column,value)
