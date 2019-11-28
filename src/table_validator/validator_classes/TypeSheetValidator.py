@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-
+from .SheetValidator import SheetValidator
 
 class TypeSheetValidator(SheetValidator):
     def __init__(self,row,column,cls):
-        super(self,row,column)
+        super.__init__(self,row,column)
         self.cls = cls
 
     def validate(self,value):

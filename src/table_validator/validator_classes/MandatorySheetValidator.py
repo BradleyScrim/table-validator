@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from .SheetValidator import SheetValidator
+
 class MandatorySheetValidator(SheetValidator):
 # TODO a non-null value must be present
     def __init__(self,row,column):

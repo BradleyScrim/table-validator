@@ -7,7 +7,7 @@ from collections import defaultdict
 from functools import partial
 from typing import Any, Callable, Iterable, List, Mapping, Set, TextIO, Tuple, Union
 
-from validator_classes import SheetError,IntSheetValidator,FloatSheetValidator,MandatorySheetValidator
+from table_validator.validator_classes import SheetError,TypeSheetValidator,IntSheetValidator,FloatSheetValidator,MandatorySheetValidator
 
 
 

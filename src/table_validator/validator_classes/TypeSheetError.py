@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import SheetError
+from .SheetError import SheetError
 
 class TypeSheetError(SheetError):
     def __init__(self,row,column,value,cls):
