@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from .SheetError import SheetError
+import SheetError
 
-class TypeSheetError(SheetError):
+class MandatorySheetError(SheetError):
     def __init__(self,row,column,value,cls):
         super(self,row,column,value)
         self.cls = cls

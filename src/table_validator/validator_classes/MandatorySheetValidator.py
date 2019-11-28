@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .SheetValidator import SheetValidator
+from .MandatorySheetError import MandatorySheetError
 
 class MandatorySheetValidator(SheetValidator):
 # TODO a non-null value must be present
@@ -11,4 +12,4 @@ class MandatorySheetValidator(SheetValidator):
         if(value):
             return True,None
         else:
-            return false,MandatorySheetError(row,column,value)
+            return False,MandatorySheetError(self.row,self.column,self.value)

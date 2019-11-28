@@ -14,4 +14,4 @@ class SheetValidator(object):
     # this does the actual validation
     # this empty validator always succeeds
     def validate(self,value):
-        return True,SheetError(row,column,value)
+        return True,SheetError(self.row,self.column,self.value)
