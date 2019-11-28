@@ -10,8 +10,9 @@ from typing import Any, Callable, Iterable, List, Mapping, Set, TextIO, Tuple, U
 from table_validator.validator_classes.SheetError import SheetError
 from table_validator.validator_classes.TypeSheetValidator import TypeSheetValidator
 from table_validator.validator_classes.IntSheetValidator import IntSheetValidator
-from  table_validator.validator_classes.FloatSheetValidator import FloatSheetValidator
+from table_validator.validator_classes.FloatSheetValidator import FloatSheetValidator
 from table_validator.validator_classes.MandatorySheetValidator import MandatorySheetValidator
+from table_validator.validator_classes.ExactStringSheetValidator import ExactStringSheetValidator
 
 
 
@@ -51,7 +52,11 @@ def parse_template(template) -> Rules:
 
             open_bracket = cell.find('{')
             if -1 == open_bracket:
-                continue
+                # no opening bracket
+                # -- this means we have a string that should be reproduced
+                yield [
+                    ExactStringSheetValidator(i,j,cell)
+                ]
 
             close_bracket = cell.find('}', open_bracket)
             if -1 == close_bracket:
@@ -117,7 +122,7 @@ int_validator = partial(type_validator, cls=int)
 float_validator = partial(type_validator, cls=float)
 
 
-def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
+def old_validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
     """Validate a candidate using a given template."""
     rules, repeats = _consume_parsed_template(parse_template(template))
 
@@ -153,6 +158,31 @@ def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[boo
 
             current_column_index += 1
         current_row_index += 1
+    return (len(errors)==0),errors
+
+def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
+    """Validate a candidate using a given template."""
+    rules, repeats = _consume_parsed_template(parse_template(template))
+
+    current_row_index = 0
+
+    errors = []
+
+    for current_row_index, row in enumerate(template):
+        for current_column_index, validators in enumerate(row):
+            for validator in validators:
+                value = None
+                try:
+                    value = candidate[current_row_index][current_column_index]
+                except:
+                    value = None
+                print("Vlidator %s" % validator)
+                (v,e) = validator.validate(value)
+                if(v):
+                    continue
+                else:
+                    errors.append(e)
+
     return (len(errors)==0),errors
 
     # passed = True
