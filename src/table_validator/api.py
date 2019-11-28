@@ -168,12 +168,12 @@ def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[boo
 
     errors = []
 
-    print("TEMPLATE:")
-    print(rules)
+    #print("TEMPLATE:")
+    #print(rules)
 
     for current_row_index, row in rules.items():
-        print("current_row_index %s" % current_row_index)
-        print("Row %s" % row)
+        # print("current_row_index %s" % current_row_index)
+        # print("Row %s" % row)
         for current_column_index, validators in row.items():
             for validator in validators:
                 value = None
@@ -181,7 +181,7 @@ def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[boo
                     value = candidate[current_row_index][current_column_index]
                 except:
                     value = None
-                print("Validator %s" % validator)
+                # print("Validator %s" % validator)
                 (v,e) = validator.validate(value)
                 if(v):
                     continue
