@@ -7,4 +7,4 @@ class SheetError:
         self.value = value
 
     def message(self):
-        return "%d, %d: %s" %(row,column,value)
+        return "%d, %d: %s" %(self.row,self.column,self.value)

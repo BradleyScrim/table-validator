@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
-# base class
-class SheetValidator:
+import SheetError
 
+class SheetValidator:
+    
     def __init__(self,row,column):
             self.row = row
             self.column = column
@@ -13,4 +14,4 @@ class SheetValidator:
     # this does the actual validation
     # this empty validator always succeeds
     def validate(self,value):
-        return True,SheetError(row,column,value)
+        return True,SheetError(self.row,self.column,self.value)

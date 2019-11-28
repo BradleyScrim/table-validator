@@ -7,4 +7,4 @@ class NoError:
         self.value = value
 
     def message(self):
-        return "Everything fine at %d, %d: %s" %(row,column,value)
+        return "Everything fine at %d, %d: %s" %(self.row,self.column,self.value)
