@@ -10,7 +10,7 @@ from typing import Any, Callable, Iterable, List, Mapping, Set, TextIO, Tuple, U
 from table_validator.validator_classes.SheetError import SheetError
 from table_validator.validator_classes.TypeSheetValidator import TypeSheetValidator
 from table_validator.validator_classes.IntSheetValidator import IntSheetValidator
-from  table_validator.validator_classes.FloatSheetValidator import FloatSheetValidato
+from  table_validator.validator_classes.FloatSheetValidator import FloatSheetValidator
 from table_validator.validator_classes.MandatorySheetValidator import MandatorySheetValidator
 
 
