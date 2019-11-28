@@ -35,27 +35,6 @@ Rules = Iterable[Union[List[ValidatorTuple], str]]
 # Compromise:
 # ErrorObject to create  a message
 
-class SheetError:
-    def __init__(self,row,column,value):
-        self.row = row;
-        self.column = column
-        self.value = value
-
-    def message(self):
-        return "%d, %d: %s" %(row,column,value)
-
-# TODO: Add classes for each validator
-
-class TypeSheetError(SheetError):
-    def __init__(self,row,column,value,cls):
-        super(self,row,column,value)
-        self.cls = cls
-
-    def message(self):
-        return "%d, %d: %s should have been of type %s" %(row,column,value,cls)
-
-
-
 
 
 # TODO: Replace with objects
