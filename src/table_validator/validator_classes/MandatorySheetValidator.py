@@ -5,5 +5,8 @@ class MandatorySheetValidator(SheetValidator):
     def __init__(self,row,column):
         super(self,row,column)
 
-    def validate(self):
-        return True,MandatorySheetError(row,column,value)
+    def validate(self,value):
+        if(value):
+            return True,None
+        else:
+            return false,MandatorySheetError(row,column,value)
