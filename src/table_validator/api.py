@@ -66,7 +66,7 @@ def parse_template(template) -> Rules:
                 raise ValueError(f'ERROR in {i}, {j} {cell}: no right bracket')
 
             command = cell[open_bracket + 1: close_bracket]
-            print(f'{EMOJI} command at ({i}, {j}): {command}')
+            # print(f'{EMOJI} command at ({i}, {j}): {command}')
 
             # TODO: here we have to create the right NEW validators
             if command.startswith('INT'):
@@ -89,7 +89,7 @@ def _consume_parsed_template(rules: Rules) -> Tuple[Mapping[int, Mapping[int, Li
     rule_dict = defaultdict(lambda: defaultdict(list))
     for rule in rules:
         for o in rule:
-            print(o)
+            # print(o)
             rule_dict[o.row][o.column].append(o)
 
     rule_dict = {k: dict(v) for k, v in rule_dict.items()}
@@ -161,7 +161,7 @@ def old_validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple
 def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
     """Validate a candidate using a given template."""
     parse_result = parse_template(template)
-    print("PARSE RESULT %s" % parse_result )
+    #print("PARSE RESULT %s" % parse_result )
     rules, repeats = _consume_parsed_template(parse_result)
 
     current_row_index = 0

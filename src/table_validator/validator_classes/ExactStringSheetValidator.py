@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from .SheetValidator import SheetValidator
-from .MandatorySheetError import MandatorySheetError
+from .ExactStringSheetError import ExactStringSheetError
 
 class ExactStringSheetValidator(SheetValidator):
 # TODO a non-null value must be present
@@ -14,4 +14,4 @@ class ExactStringSheetValidator(SheetValidator):
         if(value == self._string):
             return True,None
         else:
-            return False,ExactStringSheetError(self.row,self.column,self.value,self._string)
+            return False,ExactStringSheetError(self.row,self.column,value,self._string)
