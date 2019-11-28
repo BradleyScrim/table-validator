@@ -45,6 +45,9 @@ Rules = Iterable[Union[List[ValidatorTuple], str]]
 # TODO: Replace with objects
 def parse_template(template) -> Rules:
     """Parse a template."""
+
+    returnValue = []
+
     for i, row in enumerate(template):
         for j, cell in enumerate(row):
             if pd.isnull(cell):
@@ -54,9 +57,9 @@ def parse_template(template) -> Rules:
             if -1 == open_bracket:
                 # no opening bracket
                 # -- this means we have a string that should be reproduced
-                yield [
-                    ExactStringSheetValidator(i,j,cell)
-                ]
+                print(f'{EMOJI} exact comparison at ({i}, {j}): {cell}')
+                returnValue.append(ExactStringSheetValidator(i,j,cell))
+                continue
 
             close_bracket = cell.find('}', open_bracket)
             if -1 == close_bracket:
@@ -67,37 +70,31 @@ def parse_template(template) -> Rules:
 
             # TODO: here we have to create the right NEW validators
             if command.startswith('INT'):
-                yield [
-                    MandatorySheetValidator(i,j),
-                    IntSheetValidator(i, j),
-                ]
+                returnValue.append(MandatorySheetValidator(i,j))
+                returnValue.append(IntSheetValidator(i, j))
             elif command.startswith('FLOAT'):
-                yield [
-                    MandatorySheetValidator(i, j),
-                    FloatSheetValidator(i, j)
-                ]
+                returnValue.append(MandatorySheetValidator(i, j))
+                returnValue.append(FloatSheetValidator(i, j))
             elif command.startswith('STR'):
-                yield [MandatorySheetValidator(i, j)]
+                yield returnValue.append(MandatorySheetValidator(i, j))
             elif command.startswith('REPEAT_ROW'):
                 yield 'REPEAT', i
+
+            yield returnValue
+    return returnValue
 
 
 def _consume_parsed_template(rules: Rules) -> Tuple[Mapping[int, Mapping[int, List[Validator]]], Set[int]]:
     """Reorganize the parsed template."""
     rule_dict = defaultdict(lambda: defaultdict(list))
-    repeats = set()
     for rule in rules:
-        if isinstance(rule, str):
-            _, line = rule
-            repeats.add(line)
-        elif isinstance(rule, list):
-            for o in rule:
-                rule_dict[o.row][o.column].append(o)
+        for o in rule:
+            print(o)
+            rule_dict[o.row][o.column].append(o)
 
     rule_dict = {k: dict(v) for k, v in rule_dict.items()}
-    print( repeats, '{EMOJI} repeats')
     print(rule_dict, '{EMOJI} rules')
-    return rule_dict, repeats
+    return rule_dict, None
 
 
 def required_validator(candidate: List[List[Any]], row: int, column: int) -> bool:
@@ -150,6 +147,7 @@ def old_validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple
                 continue
 
             for validator in validators:
+                print("§ VALIDATOR %s",validator)
                 (v,e) = validator.validate(candidate[current_row_index][current_column_index])
                 if(v):
                     continue
@@ -162,21 +160,28 @@ def old_validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple
 
 def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
     """Validate a candidate using a given template."""
-    rules, repeats = _consume_parsed_template(parse_template(template))
+    parse_result = parse_template(template)
+    print("PARSE RESULT %s" % parse_result )
+    rules, repeats = _consume_parsed_template(parse_result)
 
     current_row_index = 0
 
     errors = []
 
-    for current_row_index, row in enumerate(template):
-        for current_column_index, validators in enumerate(row):
+    print("TEMPLATE:")
+    print(rules)
+
+    for current_row_index, row in rules.items():
+        print("current_row_index %s" % current_row_index)
+        print("Row %s" % row)
+        for current_column_index, validators in row.items():
             for validator in validators:
                 value = None
                 try:
                     value = candidate[current_row_index][current_column_index]
                 except:
                     value = None
-                print("Vlidator %s" % validator)
+                print("Validator %s" % validator)
                 (v,e) = validator.validate(value)
                 if(v):
                     continue
