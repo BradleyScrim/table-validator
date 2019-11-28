@@ -122,6 +122,9 @@ def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[boo
     rules, repeats = _consume_parsed_template(parse_template(template))
 
     current_row_index = 0
+
+    errors = []
+
     while current_row_index <= len(candidate):
         current_row_rules = rules.get(current_row_index)
         if current_row_rules is None:
@@ -142,12 +145,15 @@ def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[boo
                 continue
 
             for validator in validators:
-                if not validator(candidate, current_row_index, current_column_index):
-                    return False,[]
+                (v,e) = validator.validate(candidate[current_row_index][current_column_index])
+                if(v):
+                    continue
+                else:
+                    errors.append(e)
 
             current_column_index += 1
         current_row_index += 1
-    return True,[]
+    return (len(errors)==0),errors
 
     # passed = True
     # row_offset = 0

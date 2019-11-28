@@ -4,7 +4,7 @@ from .SheetError import SheetError
 
 class TypeSheetError(SheetError):
     def __init__(self,row,column,value,cls):
-        super(self,row,column,value)
+        super().__init__(row,column,value)
         self.cls = cls
 
     def message(self):

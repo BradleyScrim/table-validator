@@ -15,4 +15,4 @@ class TypeSheetValidator(SheetValidator):
         except ValueError:
             return False,TypeSheetError(self.row,self.column,"Wrong data type. Expected:", self.cls)
         else:
-            return True,NoError(self.row,self.column);
+            return True,NoError(self.row,self.column,value);
