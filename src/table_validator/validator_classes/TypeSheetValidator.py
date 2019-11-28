@@ -6,7 +6,7 @@ from .NoError import NoError
 
 class TypeSheetValidator(SheetValidator):
     def __init__(self,row,column,cls):
-        super.__init__(self,row,column)
+        super().__init__(row,column)
         self.cls = cls
 
     def validate(self,value):
