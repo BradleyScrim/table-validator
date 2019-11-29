@@ -1,0 +1,96 @@
+prefixes	classification
+alkyl	Alkane
+alkenyl	Alkene
+alkynyl	Alkyne
+cycloalkyl	Cycloalkane
+cycloalkenyl	Cycloalkene
+cycloalkynyl	Cycloalkyne
+cyclo	Cyclic compound
+phenyl	Benzene derivative
+halo	haloalkane
+fluoro	fluoroalkane 
+chloro	chloroalkane
+bromo	bromoalkane
+iodo	iodoalkane
+oxido	?
+hydroxy	Alcohol
+oyl	Ketone
+oxo	Ketone
+NA	Ketone
+formyl	Aldehyde
+!carbonofluoridoyl	Acyl halide
+!carbonochloridoyl	Acyl halide
+!carbonobromidoyl	Acyl halide
+!carbonoiodidoyl	Acyl halide
+!(alkoxycarbonyl)oxy	Carbonate
+carboxy	Carboxylate
+carboxylate	Carboxylate
+carboxylic acid	Carboxylic acid
+!alkanoyloxy	Ester
+!alkoxycarbonyl	Ester
+methoxy	Methoxy
+hydroperoxy	Hydroperoxide
+peroxy	Peroxide
+alkoxy	Ether
+dialkoxy	Acetal
+trialkoxy	Orthoester
+methylenedioxy	Heterocycle
+tetralkoxy	Orthocarbonate ester
+amido	Amide
+!carbamoyl	Amide
+amino	Amine
+ammonio-	Amine
+imino	Imine
+imido	Imide
+azido	Azide
+azo	Azo compound
+cyanato	Cyanates
+isocyanato	Cyanates
+nitrooxy	Nitrate
+nitroxy	Nitrate
+cyano	Nitrile
+isocyano	Nitrile
+nitrosooxy	Nitrite
+nitro	Nitro compound
+nitroso	Nitroso compound
+nitrosyl	Nitroso compound
+oxime	Oxime
+pyridyl	Pyridine derivative
+pyridin	Pyridine derivative
+!(-carbamoyl)oxy	Carbamate ester
+sulfanyl	Thiol
+!substituent sulfanyl	Sulfide(Thioether)
+!substituent disulfanyl	Disulfide
+sulfinyl	Sulfoxide
+sulfonyl	Sulfone
+sulfino	Sulfinic acid
+sulfo	Sulfonic acid
+sulfonyloxy	Sulfonate ester
+!oxysulfonyl	Sulfonate ester
+thiocyanato	Thiocyanate
+isothiocyanato	Thiocyanate
+thioyl	Thioketone
+sulfanylidene	Thioketone
+methanethioyl	Thial
+sulfanylidene	Thial
+mercaptocarbonyl	Thiocarboxylic acid
+hydroxythiocarbonyl	Thiocarboxylic acid
+dithiocarboxy	Dithiocarboxylic acid
+phosphanyl	Phosphine (Phosphane)
+phosphono	Phosphonic acid
+phosphonooxy	Phosphate
+phospho	Phosphate
+phosph	Phosphate
+![(alkoxy)hydroxyphosphoryl]oxy	Phosphodiester
+!O-[(alkoxy)hydroxyphosphoryl]	Phosphodiester
+borono	Boronic acid
+!O-[bis(alkoxy)alkylboronyl]	Boronic ester
+!hydroxyborino	Borinic acid
+!O-[alkoxydialkylboronyl]	Borinic ester
+alkyl	Alkyllithium
+alkyl	Alkylmagnesium halide
+alkyl	Alkylaluminium
+alkyl	Silyl ether
+ammonio	Ammonium
+onio	Ammonium
+aldehyde	Aldehyde
