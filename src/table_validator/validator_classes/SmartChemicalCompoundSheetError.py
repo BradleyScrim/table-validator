@@ -3,9 +3,10 @@
 from .SheetError import SheetError
 
 class SmartChemicalCompoundSheetError(SheetError):
-    def __init__(self,row,column,value,cls):
+    def __init__(self,row,column,value,output,err):
         super(self,row,column,value)
-        self.cls = cls
+        self.output=str(output)
+        self.err=str(err)
 
     def message(self):
-        return "%d, %d: %s should have been of type %s" %(self.row,self.column,self.value,self.cls)
+        return "%d, %d: %s Compund Validation failed with output %s and error message %s" %(self.row,self.column,self.value,self.output,self.err)
