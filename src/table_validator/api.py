@@ -59,28 +59,30 @@ def parse_template(template) -> Rules:
                 # -- this means we have a string that should be reproduced
                 print(f'{EMOJI} exact comparison at ({i}, {j}): {cell}')
                 returnValue.append(ExactStringSheetValidator(i,j,cell))
-                continue
+            else:
+                close_bracket = cell.find('}', open_bracket)
+                if -1 == close_bracket:
+                    raise ValueError(f'ERROR in {i}, {j} {cell}: no right bracket')
 
-            close_bracket = cell.find('}', open_bracket)
-            if -1 == close_bracket:
-                raise ValueError(f'ERROR in {i}, {j} {cell}: no right bracket')
+                command = cell[open_bracket + 1: close_bracket]
+                # print(f'{EMOJI} command at ({i}, {j}): {command}')
 
-            command = cell[open_bracket + 1: close_bracket]
-            # print(f'{EMOJI} command at ({i}, {j}): {command}')
+                # TODO: here we have to create the right NEW validators
+                if command.startswith('INT'):
+                    returnValue.append(MandatorySheetValidator(i,j))
+                    returnValue.append(IntSheetValidator(i, j))
+                elif command.startswith('FLOAT'):
+                    returnValue.append(MandatorySheetValidator(i, j))
+                    returnValue.append(FloatSheetValidator(i, j))
+                elif command.startswith('STR'):
+                    returnValue.append(MandatorySheetValidator(i, j))
+                #elif
+                #    True
+                    #command.startswith('REPEAT_ROW'):
+                    #yield 'REPEAT', i
 
-            # TODO: here we have to create the right NEW validators
-            if command.startswith('INT'):
-                returnValue.append(MandatorySheetValidator(i,j))
-                returnValue.append(IntSheetValidator(i, j))
-            elif command.startswith('FLOAT'):
-                returnValue.append(MandatorySheetValidator(i, j))
-                returnValue.append(FloatSheetValidator(i, j))
-            elif command.startswith('STR'):
-                yield returnValue.append(MandatorySheetValidator(i, j))
-            elif command.startswith('REPEAT_ROW'):
-                yield 'REPEAT', i
 
-            yield returnValue
+    yield returnValue
     return returnValue
 
 
@@ -93,7 +95,7 @@ def _consume_parsed_template(rules: Rules) -> Tuple[Mapping[int, Mapping[int, Li
             rule_dict[o.row][o.column].append(o)
 
     rule_dict = {k: dict(v) for k, v in rule_dict.items()}
-    print(rule_dict, '{EMOJI} rules')
+    #print(rule_dict, '{EMOJI} rules')
     return rule_dict, None
 
 
