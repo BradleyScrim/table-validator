@@ -27,6 +27,7 @@ from typing import Type
 import click
 from PyQt5.QtCore import QPropertyAnimation, QRect, Qt
 from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+from .CandidateTableWidget import CandidateTableWidget;
 
 import table_validator
 
@@ -45,6 +46,7 @@ class ValidationDropTarget(QWidget):
         self.label_url = QLabel()
         self.label_success = QLabel()
         self.label_instructions = QLabel()
+        self.CandidateTableWidget = CandidateTableWidget([[1,2,3],[2,3,4]])
 
         # self.label_url = 0
         super().__init__()
@@ -209,6 +211,7 @@ class ValidationDropTarget(QWidget):
         """)
 
         vbox = QVBoxLayout()
+        vbox.addWidget(self.CandidateTableWidget)
         vbox.addWidget(self.label_url)
         vbox.addWidget(self.label_success)
         vbox.addWidget(self.label_instructions)
