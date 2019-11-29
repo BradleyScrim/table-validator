@@ -1,0 +1,97 @@
+ane	Alkane
+ene	Alkene
+yne	Alkyne
+benzene	Benzene derivative
+halide	Haloalkane
+fluoride	Fluoroalkane
+chloride	Chloroalkane
+bromide	Bromoalkane
+iodide	Iodoalkane
+halid	Haloalkane
+fluorid	Fluoroalkane
+chlorid	Chloroalkane
+bromid	Bromoalkane
+iodid	Iodoalkane
+oyl halide	Acyl halide
+oyl fluoride	Acyl halide
+oyl chloride	Acyl halide
+oyl bromide	Acyl halide
+oyl iodide	Acyl halide
+yl halide	Acyl halide
+yl fluoride	Acyl halide
+yl chloride	Acyl halide
+yl bromide	Acyl halide
+yl iodide	Acyl halide
+ol	Alcohol
+one	Ketone
+al	Aldehyde
+carbonate	Carbonate
+oate	Carboxylate
+ate	Carboxylate
+ic acid	Carboxylic acid
+oic acid	Carboxylic acid
+!alkyl alkanoate	Ester
+metoxy	Methoxy
+hydroperoxide	Hydroperoxide
+peroxide	Peroxide
+ether	Ether
+hemiacetal	Hemiacetal
+hemiketal	Hemiketal
+acetal	Acetal
+ketal	Ketal
+dioxole	Heterocycle
+!tetraalkylorthocarbonate	Orthocarbonate ester
+anhydride	Organic acid anhydride
+amide	Amide
+amine	Amine
+ammonium	Amine
+imine	Imine
+imide	Imide
+azide	Azide
+diazene	Azo compound
+cyanate	Cyanates
+isocyanate	Cyanates
+nitrate	Nitrate
+nitrile	Nitrile
+cyanide	Nitrile
+isonitrile	Nitrile
+isocyanide	Nitrile
+alkyl nitrite	Nitroso compound
+oxime	Oxime
+pyridine	Pyridine derivative
+carbamate	Carbamate ester
+thiol	Thiol
+sulfide	Sulfide (Thioether)
+disulfide	Disulfide
+sulfoxide	Sulfoxide
+sulfone	Sulfone
+sulfinic acid	Sulfinic acid
+sulfonic acid	Sulfonic acid
+!sulfonate	Sulfonate ester
+thiocyanate	Thiocyanate
+isothiocyanate	Thiocyanate
+thione	Thioketone
+thial	Thial
+thioic + acid	Thiocarboxylic acid
+thioate	Thioester
+dithioic acid	Dithiocarboxylic acid
+dithioate	Dithiocarboxylic acid ester
+phosphane	Phosphine (Phosphane)
+phosphonic acid	Phosphonic acid
+phosph	Phosphate
+phosphate	Phosphate
+!di(substituent) hydrogen phosphate	Phosphodiester
+!phosphoric acid di(substituent) ester	Phosphodiester
+boronic acid	Boronic acid
+!boronic acid + di(substituent) ester	Boronic ester
+borinic acid	Borinic acid
+!borinic acid + substituent ester	Borinic ester
+lithium	Alkyllithium
+magnesium halide	Alkylmagnesium halide
+aluminium	Alkylaluminium
+silyl ether	Silyl ether
+ylidene	Double bond
+ylidyne	Triple bond
+oyl	Carboxylic acyl radical
+yl	alkyl
+aldehyde	Aldehyde

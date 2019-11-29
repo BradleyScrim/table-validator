@@ -2,6 +2,10 @@ table-validator
 ===============
 Use tables with validation schemata to validate other tables.
 
+Dependencies
+------------
+- INFO: Source Code of the Compund Parser by Lukrécia Mertová: https://github.com/mertova/Compound_parser_hackethon2019
+
 Installation
 ------------
 Install directly from `GitHub <https://github.com/cthoyt/table-validator>`_ with:
