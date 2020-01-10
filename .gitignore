@@ -104,3 +104,9 @@ venv.bak/
 .mypy_cache/
 .idea
 .DS_Store
+
+# eclipse
+/.settings/
+/.vscode/
+/.project
+/.pydevproject
