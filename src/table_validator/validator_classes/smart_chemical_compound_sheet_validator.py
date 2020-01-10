@@ -1,33 +1,36 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-validator for exact matches
+validator for chemical compounds using the external java tool CompoundParser.jar
 """
 
+import subprocess
 from .sheet_validator import SheetError, SheetValidator
 
-class ExactStringSheetError(SheetError):
+class SmartChemicalCompoundSheetError(SheetError):
 
-    def __init__(self,row:int,column:int,check_string:str):
-        super().__init__(row, column)
-        self.__check_string=check_string
+    def __init__(self, row:int, column:int, actual_value:str, output:str ,error_message:str):
+        super().__init__(row, column, actual_value)
+        self.__output=output
+        self.__error_message=error_message
     
     def get_message(self):
-        return "value should be '%s'" %(self.__check_string)
+        return "Compound Validation failed with output '%s' and error message %s" %(self.__output,self.__error_message)
 
-class ExactStringSheetValidator(SheetValidator):
+class SmartChemicalCompoundSheetValidator(SheetValidator):
 
-    def __init__(self,row:int,column:int,check_string:str):
-        super().__init__(row, column)
-        self.__check_string=check_string
-
-    @property
-    def check_string(self):
-        return self.__check_string
+    # REM uses __init__() from LocationProvider
 
     def validate(self,value):
-        # TODO issue#5 possibly strip of trailing whitespace
-        if(value == self.__check_string):
+        # get the cell value into input json format
+        args=["{\"value\":\"" + value + "\"}"]
+        # run external java program
+        p = subprocess.Popen('java -jar CompoundParser/CompoundParser.jar '+' '.join(args), stdout=subprocess.PIPE, shell=True)
+        # get output and return code
+        output, err = p.communicate()
+        p_return_code = p.wait()
+        # validation
+        if(p_return_code == 0):
             return True,None
         else:
-            return False,ExactStringSheetError(self.row,self.column,self.__check_string)
+            return False,SmartChemicalCompoundSheetError(self.row, self.column, value, output, err)
