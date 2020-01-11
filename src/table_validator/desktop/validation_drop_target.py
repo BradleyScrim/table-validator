@@ -125,7 +125,8 @@ class ValidationDropTarget(QWidget):
         successfullyValidated,errorObjects = self.validate(candidate)
 
         for i in errorObjects:
-            print(i.message())
+            # object is SheetError
+            print(i.get_formatted_full_error_message())
 
         if successfullyValidated:
             self.label_success.setText(

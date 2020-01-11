@@ -8,8 +8,8 @@ from .sheet_validator import SheetError, SheetValidator
 
 class ExactStringSheetError(SheetError):
 
-    def __init__(self,row:int,column:int,check_string:str):
-        super().__init__(row, column)
+    def __init__(self, row:int, column:int, actual_value:str, check_string:str):
+        super().__init__(row, column, actual_value)
         self.__check_string=check_string
     
     def get_message(self):
@@ -30,4 +30,4 @@ class ExactStringSheetValidator(SheetValidator):
         if(value == self.__check_string):
             return True,None
         else:
-            return False,ExactStringSheetError(self.row,self.column,self.__check_string)
+            return False,ExactStringSheetError(self.row, self.column, value, self.__check_string)

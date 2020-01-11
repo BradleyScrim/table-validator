@@ -3,20 +3,11 @@
 """API for ``table_validator``."""
 
 import logging
+import pandas as pd
 from collections import defaultdict
 from functools import partial
 from typing import Any, Callable, Iterable, List, Mapping, Set, TextIO, Tuple, Union
-
-from table_validator.validator_classes.SheetError import SheetError
-from table_validator.validator_classes.TypeSheetValidator import TypeSheetValidator
-from table_validator.validator_classes.IntSheetValidator import IntSheetValidator
-from table_validator.validator_classes.FloatSheetValidator import FloatSheetValidator
-from table_validator.validator_classes.MandatorySheetValidator import MandatorySheetValidator
-from table_validator.validator_classes.ExactStringSheetValidator import ExactStringSheetValidator
-
-
-
-import pandas as pd
+from . import validator_classes as v
 
 logger = logging.getLogger(__name__)
 
@@ -58,7 +49,7 @@ def parse_template(template) -> Rules:
                 # no opening bracket
                 # -- this means we have a string that should be reproduced
                 print(f'{EMOJI} exact comparison at ({i}, {j}): {cell}')
-                returnValue.append(ExactStringSheetValidator(i,j,cell))
+                returnValue.append(v.ExactStringSheetValidator(i,j,cell))
             else:
                 close_bracket = cell.find('}', open_bracket)
                 if -1 == close_bracket:
@@ -69,13 +60,13 @@ def parse_template(template) -> Rules:
 
                 # TODO: here we have to create the right NEW validators
                 if command.startswith('INT'):
-                    returnValue.append(MandatorySheetValidator(i,j))
-                    returnValue.append(IntSheetValidator(i, j))
+                    returnValue.append(v.MandatorySheetValidator(i,j))
+                    returnValue.append(v.IntTypeSheetValidator(i, j))
                 elif command.startswith('FLOAT'):
-                    returnValue.append(MandatorySheetValidator(i, j))
-                    returnValue.append(FloatSheetValidator(i, j))
+                    returnValue.append(v.MandatorySheetValidator(i, j))
+                    returnValue.append(v.FloatTypeSheetValidator(i, j))
                 elif command.startswith('STR'):
-                    returnValue.append(MandatorySheetValidator(i, j))
+                    returnValue.append(v.MandatorySheetValidator(i, j))
                 #elif
                 #    True
                     #command.startswith('REPEAT_ROW'):
@@ -98,27 +89,6 @@ def _consume_parsed_template(rules: Rules) -> Tuple[Mapping[int, Mapping[int, Li
     #print(rule_dict, '{EMOJI} rules')
     return rule_dict, None
 
-
-def required_validator(candidate: List[List[Any]], row: int, column: int) -> bool:
-    """Validate a cell for existence."""
-    _row = candidate[row]
-    return _row[column]
-
-
-def type_validator(candidate: List[List[Any]], row: int, column: int, cls: type) -> bool:
-    """Validate a cell for having the given type."""
-    value = candidate[row][column]
-
-    try:
-        cls(value)
-    except ValueError:
-        return False,ValidationErrorObject(row,column,"Wrong data type. Expected:", cls)
-    else:
-        return True
-
-
-int_validator = partial(type_validator, cls=int)
-float_validator = partial(type_validator, cls=float)
 
 
 def old_validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
