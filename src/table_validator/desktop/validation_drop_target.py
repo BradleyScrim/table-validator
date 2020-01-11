@@ -27,9 +27,10 @@ from typing import Type
 import click
 from PyQt5.QtCore import QPropertyAnimation, QRect, Qt
 from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
-from .CandidateTableWidget import CandidateTableWidget;
+from .candidate_table import CandidateTableWidget, CandidateTableModel
 
 import table_validator
+from PyQt5.Qt import QEvent
 
 logger = logging.getLogger(__name__)
 
@@ -41,12 +42,12 @@ __all__ = [
 
 class ValidationDropTarget(QWidget):
     """A Qt app that is a drop target and validates the file dropped."""
-
+    
     def __init__(self, app, validate, bottom, right):
         self.label_url = QLabel()
         self.label_success = QLabel()
         self.label_instructions = QLabel()
-        self.CandidateTableWidget = CandidateTableWidget([[1,2,3],[2,3,4]])
+        self.candidate_table_widget = CandidateTableWidget()
 
         # self.label_url = 0
         super().__init__()
@@ -64,46 +65,27 @@ class ValidationDropTarget(QWidget):
         self.accepted_formats = ['text/uri-list']
 
     def _big_geometry(self):
-        w = 30
-        h = 30
-        x = self.right - w
-        y = self.bottom - h
-
-        big_w = 300
-        big_h = 300
-        big_x = self.right - big_w
-        big_y = self.bottom - big_h
-
-        if (self.x() < x) and (self.y() < y):
+        if (self.x() < self.GEOMETRY_X) and (self.y() < self.GEOMETRY_Y):
             return
 
         self.animation = QPropertyAnimation(self, b"geometry")
-        self.animation.setDuration(250)
-        self.animation.setStartValue(QRect(x, y, w, h))
-        self.animation.setEndValue(QRect(big_x, big_y, big_w, big_h))
+        self.animation.setDuration(self.GEOMETRY_ANIMATION_TIME)
+        self.animation.setStartValue(QRect(self.GEOMETRY_X, self.GEOMETRY_Y, self.GEOMETRY_W, self.GEOMETRY_H))
+        self.animation.setEndValue(QRect(self.GEOMETRY_BIG_X, self.GEOMETRY_BIG_Y, self.GEOMETRY_BIG_W, self.GEOMETRY_BIG_H))
         self.animation.start()
-        self.setFixedSize(big_w, big_h)
+        self.setFixedSize(self.GEOMETRY_BIG_W, self.GEOMETRY_BIG_H)
+
 
     def _small_geometry(self):
-        w = 30
-        h = 30
-        x = self.right - w
-        y = self.bottom - h
-
-        big_w = 300
-        big_h = 300
-        big_x = self.right - big_w
-        big_y = self.bottom - big_h
-
-        if (self.x() == x) and (self.y() == y):
+        if (self.x() == self.GEOMETRY_X) and (self.y() == self.GEOMETRY_Y):
             return
 
         self.animation = QPropertyAnimation(self, b"geometry")
-        self.animation.setDuration(250)
-        self.animation.setStartValue(QRect(big_x, big_y, big_w, big_h))
-        self.animation.setEndValue(QRect(x, y, w, h))
+        self.animation.setDuration(self.GEOMETRY_ANIMATION_TIME)
+        self.animation.setStartValue(QRect(self.GEOMETRY_BIG_X, self.GEOMETRY_BIG_Y, self.GEOMETRY_BIG_W, self.GEOMETRY_BIG_H))
+        self.animation.setEndValue(QRect(self.GEOMETRY_X, self.GEOMETRY_Y, self.GEOMETRY_W, self.GEOMETRY_H))
         self.animation.start()
-        self.setFixedSize(big_w, big_h)
+        self.setFixedSize(self.GEOMETRY_BIG_W, self.GEOMETRY_BIG_H)
 
     @staticmethod
     def preprocess_response(data):
@@ -124,9 +106,14 @@ class ValidationDropTarget(QWidget):
 
         successfullyValidated,errorObjects = self.validate(candidate)
 
+        new_table_data=[]
         for i in errorObjects:
             # object is SheetError
             print(i.get_formatted_full_error_message())
+            new_table_data.append(i)
+
+        #self.candidate_table_widget=CandidateTableWidget( new_table_data )
+        self.candidate_table_widget.model.load_data(new_table_data)
 
         if successfullyValidated:
             self.label_success.setText(
@@ -177,6 +164,17 @@ class ValidationDropTarget(QWidget):
 
     # initUI
     def initUI(self):
+
+        self.GEOMETRY_W = 30
+        self.GEOMETRY_H = 30
+        self.GEOMETRY_X = self.right - self.GEOMETRY_W
+        self.GEOMETRY_Y = self.bottom - self.GEOMETRY_H
+        self.GEOMETRY_BIG_W = 500
+        self.GEOMETRY_BIG_H = 400
+        self.GEOMETRY_BIG_X = self.right - self.GEOMETRY_BIG_W
+        self.GEOMETRY_BIG_Y = self.bottom - self.GEOMETRY_BIG_H
+        self.GEOMETRY_ANIMATION_TIME = 100
+
         self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
         self._small_geometry()
         # https://stackoverflow.com/questions/18975734/how-can-i-find-the-screen-desktop-size-in-qt-so-i-can-display-a-desktop-notific
@@ -212,7 +210,7 @@ class ValidationDropTarget(QWidget):
         """)
 
         vbox = QVBoxLayout()
-        vbox.addWidget(self.CandidateTableWidget)
+        vbox.addWidget(self.candidate_table_widget)
         vbox.addWidget(self.label_url)
         vbox.addWidget(self.label_success)
         vbox.addWidget(self.label_instructions)
