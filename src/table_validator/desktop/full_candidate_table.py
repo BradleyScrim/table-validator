@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+import xlsxwriter
+
 from PyQt5.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import (QHBoxLayout, QHeaderView, QSizePolicy,
@@ -48,7 +50,7 @@ class FullCandidateTableModel(QAbstractTableModel):
         if role != Qt.DisplayRole:
             return None
         if orientation == Qt.Horizontal:
-            return section
+            return xlsxwriter.utility.xl_col_to_name(section)
         else:
             return "{}".format(section)
 
