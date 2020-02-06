@@ -25,7 +25,7 @@ import urllib.request
 from typing import Type
 
 import click
-from PyQt5.QtCore import QPropertyAnimation, QRect, Qt
+from PyQt5.QtCore import QPropertyAnimation, QRect, Qt,QItemSelection,QItemSelectionModel,QModelIndex
 from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
 from PyQt5.QtGui import QBrush
 from .candidate_table import CandidateTableWidget, CandidateTableModel
@@ -46,6 +46,7 @@ class ValidationDropTarget(QWidget):
     """A Qt app that is a drop target and validates the file dropped."""
 
     def __init__(self, app, validate, bottom, right):
+        self.errors_encountered = []
         self.label_url = QLabel()
         self.label_success = QLabel()
         self.label_instructions = QLabel()
@@ -111,6 +112,7 @@ class ValidationDropTarget(QWidget):
 
         successfullyValidated,errorObjects = self.validate(candidate)
 
+        self.errors_encountered = errorObjects;
         new_table_data=[]
         for i in errorObjects:
             # object is SheetError
@@ -172,6 +174,21 @@ class ValidationDropTarget(QWidget):
 
     def view_clicked(self, clicked_index):
         print("clicked:",clicked_index.row())
+
+        #self.full_candidate_table_widget.table_view.selectRow(clicked_index.row())
+
+        model = self.full_candidate_table_widget.table_view.selectionModel();
+        #print("------");
+        #print(dir(self.full_candidate_table_widget.table_view.model()))
+        #print("------");
+        #print(self.full_candidate_table_widget.table_view.model())
+        #print("------");
+
+        (row, col) = self.errors_encountered[clicked_index.row()].get_location()
+
+        index = self.full_candidate_table_widget.table_view.model().index(row,col);
+        model.select(QItemSelection(index,index),QItemSelectionModel.Select | QItemSelectionModel.Clear)
+
     # initUI
     def initUI(self):
 
@@ -179,8 +196,8 @@ class ValidationDropTarget(QWidget):
         self.GEOMETRY_H = 30
         self.GEOMETRY_X = self.right - self.GEOMETRY_W
         self.GEOMETRY_Y = self.bottom - self.GEOMETRY_H
-        self.GEOMETRY_BIG_W = 1000
-        self.GEOMETRY_BIG_H = 800
+        self.GEOMETRY_BIG_W = int(self.right * 0.9)
+        self.GEOMETRY_BIG_H = int(self.bottom*0.9)
         self.GEOMETRY_BIG_X = self.right - self.GEOMETRY_BIG_W
         self.GEOMETRY_BIG_Y = self.bottom - self.GEOMETRY_BIG_H
         self.GEOMETRY_ANIMATION_TIME = 100
