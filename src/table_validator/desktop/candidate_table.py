@@ -100,5 +100,6 @@ class CandidateTableWidget(QWidget):
         self.table_view.setSizePolicy(size)
         self.main_layout.addWidget(self.table_view)
 
+        self.table_view.setSelectionBehavior(QTableView.SelectRows)
         # Set the layout to the QWidget
         self.setLayout(self.main_layout)

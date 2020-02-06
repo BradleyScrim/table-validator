@@ -102,6 +102,6 @@ class FullCandidateTableWidget(QWidget):
         size.setHorizontalStretch(1)
         self.table_view.setSizePolicy(size)
         self.main_layout.addWidget(self.table_view)
-
+        self.table_view.setSelectionBehavior(QTableView.SelectItems)
         # Set the layout to the QWidget
         self.setLayout(self.main_layout)
