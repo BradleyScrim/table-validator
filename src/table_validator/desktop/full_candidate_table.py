@@ -5,13 +5,12 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import (QHBoxLayout, QHeaderView, QSizePolicy,
                                QTableView, QWidget)
 from PyQt5 import QtCore, QtGui
+from pandas.io.sas.sas_constants import align_1_length
+from operator import gt
+from dask.array.ufunc import greater
 
 class FullCandidateTableModel(QAbstractTableModel):
-    COLUMNS = [
-        ("Location"),
-        ("Value"),
-        ("Error Message"),
-    ]
+
     def __init__(self, data=None, parent=None):
         QAbstractTableModel.__init__(self,parent)
         self.load_data(data)
@@ -36,7 +35,12 @@ class FullCandidateTableModel(QAbstractTableModel):
 
     def columnCount(self, parent=QModelIndex()):
         if(self.__data and self.__data[0]):
-            return len(self.__data[0])
+            # find the longest line
+            length=len(self.__data[0])
+            for col in self.__data:
+                if len(col) > length:
+                    length=len(col)
+            return length
         else:
             return 0
 
@@ -44,7 +48,7 @@ class FullCandidateTableModel(QAbstractTableModel):
         if role != Qt.DisplayRole:
             return None
         if orientation == Qt.Horizontal:
-            return self.COLUMNS[section]
+            return section
         else:
             return "{}".format(section)
 
@@ -59,7 +63,7 @@ class FullCandidateTableModel(QAbstractTableModel):
             if(row<len(self.__data) and column<len(self.__data[row])):
                 return "%s" % self.__data[row][column]
             else:
-                return "x"
+                return ""
 
         elif role == Qt.BackgroundRole:
             return QColor(Qt.white)
