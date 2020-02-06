@@ -1,0 +1,62 @@
+@startuml
+
+skinparam shadowing false
+'scale 3/5
+
+title: table validator
+header version: %date("dd.MM.yyyy")
+
+
+cloud "…" {
+    actor "table validator developer" as developer
+    developer --> (develop and enhance\n//TableValidator//)
+    developer --> (provide //TableValidator//\n[Download from github])
+}
+cloud "data requester" {
+    actor "computational scientist" as requester
+    requester --> (create //template//)
+    requester --> (get final data from\n//experimental scientist//\ncheck data with //TableValidator//)
+}
+
+package "agreement" as agreement {
+    note as n_agreement
+        * data structure
+        * transfer procedure
+        * …
+    end note
+}
+
+file "template.tsv" as template
+
+file "final_data.tsv" as final
+
+cloud "data provider" {
+    actor "experimental scientist" as user
+
+    usecase install as "**Install //TableValidator//**
+                    ==
+                    download //TableValidator//
+                    __
+                    install conda in user space
+                    __
+                    run //TableValidator//"
+
+
+    user -> install
+    user --> (create data files)
+    user --> (locally validate data files\nagainst //template//)
+}
+
+requester --> agreement
+user --> agreement
+
+requester --> template : provide
+user ..> template : use for validation
+
+user --> final : finish work
+requester ..> final : get final data
+
+agreement -[hidden]- template
+template -[hidden]- final
+
+@enduml
