@@ -204,7 +204,7 @@ class ValidationDropTarget(QWidget):
         self.GEOMETRY_BIG_H = int(self.bottom*0.9)
         self.GEOMETRY_BIG_X = self.right - self.GEOMETRY_BIG_W
         self.GEOMETRY_BIG_Y = self.bottom - self.GEOMETRY_BIG_H
-        self.GEOMETRY_ANIMATION_TIME = 100
+        self.GEOMETRY_ANIMATION_TIME = 0
 
         self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
         self._small_geometry()
