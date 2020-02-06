@@ -45,6 +45,7 @@ class CandidateTableModel(QAbstractTableModel):
         else:
             return "{}".format(section)
 
+
     def data(self, index, role=Qt.DisplayRole):
         column = index.column()
         row = index.row()

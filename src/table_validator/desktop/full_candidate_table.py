@@ -109,3 +109,5 @@ class FullCandidateTableWidget(QWidget):
         self.table_view.setSelectionBehavior(QTableView.SelectItems)
         # Set the layout to the QWidget
         self.setLayout(self.main_layout)
+
+                # select rows
