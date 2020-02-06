@@ -26,7 +26,7 @@ from typing import Type
 
 import click
 from PyQt5.QtCore import QPropertyAnimation, QRect, Qt,QItemSelection,QItemSelectionModel,QModelIndex
-from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QGridLayout, QWidget
 from PyQt5.QtGui import QBrush
 from .candidate_table import CandidateTableWidget, CandidateTableModel
 from .full_candidate_table import FullCandidateTableWidget, FullCandidateTableModel
@@ -124,6 +124,7 @@ class ValidationDropTarget(QWidget):
 
         self.candidate_table_widget.table_view.selectRow(0)
 
+        self.label_instructions.hide()
         if successfullyValidated:
             self.label_success.setText(
                 '<span style=" font-size:18pt; font-weight:600; color:#00aa00;">'
@@ -133,7 +134,10 @@ class ValidationDropTarget(QWidget):
         else:
             self.label_success.setText(
                 '<span style=" font-size:18pt; font-weight:600; color:#cc0000;">'
-                'Your data surely is great, but...'
+                """
+                Validation failed. Please browse errors using the error list.
+                The locations of the error occurrences will be marked.
+                """
                 '</span>'
             )
 
@@ -236,13 +240,21 @@ class ValidationDropTarget(QWidget):
         </p>
         """)
 
-        vbox = QVBoxLayout()
-        vbox.addWidget(self.full_candidate_table_widget)
-        vbox.addWidget(self.candidate_table_widget)
-        vbox.addWidget(self.label_url)
-        vbox.addWidget(self.label_success)
-        vbox.addWidget(self.label_instructions)
-        vbox.addStretch()
+        vbox = QGridLayout()
+
+
+        vbox.addWidget(self.full_candidate_table_widget,0,0)
+        vbox.addWidget(self.candidate_table_widget,1,0)
+        vbox.addWidget(self.label_url,2,0)
+        vbox.addWidget(self.label_success,3,0)
+        vbox.addWidget(self.label_instructions,4,0)
+        #vbox.addStretch()
+
+        total_height = self.bottom * 0.8
+        content_height = total_height * 0.6
+        error_height = total_height * 0.2
+
+        vbox.setRowMinimumHeight(0,content_height)
 
         self.setLayout(vbox)
 
