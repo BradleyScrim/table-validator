@@ -5,7 +5,6 @@ from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import (QHBoxLayout, QHeaderView, QSizePolicy,
                                QTableView, QWidget)
 
-# TODO: this file needs a refactoring
 
 class CandidateTableModel(QAbstractTableModel):
     COLUMNS = [
@@ -30,7 +29,7 @@ class CandidateTableModel(QAbstractTableModel):
         self.dataChanged.emit(self.index(0, 0),
                               self.index(self.rowCount() - 1,
                                          self.columnCount() - 1))
-        
+
 
     def rowCount(self, parent=QModelIndex()):
         return len(self.__data)
@@ -49,7 +48,7 @@ class CandidateTableModel(QAbstractTableModel):
     def data(self, index, role=Qt.DisplayRole):
         column = index.column()
         row = index.row()
-        
+
         if not index.isValid():
             return None
 

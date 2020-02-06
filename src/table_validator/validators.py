@@ -11,8 +11,8 @@ __all__ = [
 ]
 
 class TemplateValidator:
+    """ Class validating a file based on a template"""
     def __init__(self, template):
-
 
         print("were here");
         print(self);
