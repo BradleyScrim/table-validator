@@ -4,9 +4,9 @@ from PyQt5.QtCore import Qt, QAbstractTableModel, QModelIndex
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import (QHBoxLayout, QHeaderView, QSizePolicy,
                                QTableView, QWidget)
+from PyQt5 import QtCore, QtGui
 
-
-class CandidateTableModel(QAbstractTableModel):
+class FullCandidateTableModel(QAbstractTableModel):
     COLUMNS = [
         ("Location"),
         ("Value"),
@@ -35,7 +35,10 @@ class CandidateTableModel(QAbstractTableModel):
         return len(self.__data)
 
     def columnCount(self, parent=QModelIndex()):
-        return len(self.COLUMNS)
+        if(self.__data and self.__data[0]):
+            return len(self.__data[0])
+        else:
+            return 0
 
     def headerData(self, section, orientation, role):
         if role != Qt.DisplayRole:
@@ -53,14 +56,10 @@ class CandidateTableModel(QAbstractTableModel):
             return None
 
         if role == Qt.DisplayRole:
-
-            if column==0:
-                return self.__data[row].get_formatted_location()
-            elif column==1:
-                return self.__data[row].actual_value
-            elif column==2:
-                return self.__data[row].get_message()
-
+            if(row<len(self.__data) and column<len(self.__data[row])):
+                return "%s" % self.__data[row][column]
+            else:
+                return "x"
 
         elif role == Qt.BackgroundRole:
             return QColor(Qt.white)
@@ -69,12 +68,16 @@ class CandidateTableModel(QAbstractTableModel):
 
         return None
 
-class CandidateTableWidget(QWidget):
+class FullCandidateTableWidget(QWidget):
+
+    def load_data(self,data):
+        self.model.load_data(data)
+
     def __init__(self, data=None):
         QWidget.__init__(self)
 
         # Getting the Model
-        self.model = CandidateTableModel(data,self)
+        self.model = FullCandidateTableModel(data,self)
 
         # Creating a QTableView
         self.table_view = QTableView()
@@ -99,7 +102,6 @@ class CandidateTableWidget(QWidget):
         size.setHorizontalStretch(1)
         self.table_view.setSizePolicy(size)
         self.main_layout.addWidget(self.table_view)
-
-        self.table_view.setSelectionBehavior(QTableView.SelectRows)
+        self.table_view.setSelectionBehavior(QTableView.SelectItems)
         # Set the layout to the QWidget
         self.setLayout(self.main_layout)

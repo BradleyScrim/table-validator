@@ -27,7 +27,9 @@ from typing import Type
 import click
 from PyQt5.QtCore import QPropertyAnimation, QRect, Qt
 from PyQt5.QtWidgets import QApplication, QLabel, QVBoxLayout, QWidget
+from PyQt5.QtGui import QBrush
 from .candidate_table import CandidateTableWidget, CandidateTableModel
+from .full_candidate_table import FullCandidateTableWidget, FullCandidateTableModel
 
 import table_validator
 from PyQt5.Qt import QEvent
@@ -42,11 +44,12 @@ __all__ = [
 
 class ValidationDropTarget(QWidget):
     """A Qt app that is a drop target and validates the file dropped."""
-    
+
     def __init__(self, app, validate, bottom, right):
         self.label_url = QLabel()
         self.label_success = QLabel()
         self.label_instructions = QLabel()
+        self.full_candidate_table_widget = FullCandidateTableWidget()
         self.candidate_table_widget = CandidateTableWidget()
 
         # self.label_url = 0
@@ -100,7 +103,9 @@ class ValidationDropTarget(QWidget):
         data = response.read().decode("UTF-8")
         candidate = self.preprocess_response(data)
 
+
         logger.debug("Candidate %s" % candidate)
+        self.full_candidate_table_widget.model.load_data(candidate)
 
         self.label_url.setText("File examined: %s" % urls[0].toString())
 
@@ -114,6 +119,8 @@ class ValidationDropTarget(QWidget):
 
         #self.candidate_table_widget=CandidateTableWidget( new_table_data )
         self.candidate_table_widget.model.load_data(new_table_data)
+
+        self.candidate_table_widget.table_view.selectRow(0)
 
         if successfullyValidated:
             self.label_success.setText(
@@ -162,6 +169,9 @@ class ValidationDropTarget(QWidget):
         else:
             logger.debug("failed %s" % e.mimeData().formats())
 
+
+    def view_clicked(self, clicked_index):
+        print("clicked:",clicked_index.row())
     # initUI
     def initUI(self):
 
@@ -169,8 +179,8 @@ class ValidationDropTarget(QWidget):
         self.GEOMETRY_H = 30
         self.GEOMETRY_X = self.right - self.GEOMETRY_W
         self.GEOMETRY_Y = self.bottom - self.GEOMETRY_H
-        self.GEOMETRY_BIG_W = 500
-        self.GEOMETRY_BIG_H = 400
+        self.GEOMETRY_BIG_W = 1000
+        self.GEOMETRY_BIG_H = 800
         self.GEOMETRY_BIG_X = self.right - self.GEOMETRY_BIG_W
         self.GEOMETRY_BIG_Y = self.bottom - self.GEOMETRY_BIG_H
         self.GEOMETRY_ANIMATION_TIME = 100
@@ -210,6 +220,7 @@ class ValidationDropTarget(QWidget):
         """)
 
         vbox = QVBoxLayout()
+        vbox.addWidget(self.full_candidate_table_widget)
         vbox.addWidget(self.candidate_table_widget)
         vbox.addWidget(self.label_url)
         vbox.addWidget(self.label_success)
@@ -220,6 +231,9 @@ class ValidationDropTarget(QWidget):
 
         self.setWindowTitle('INCOME table Validation Drop Target')
         # self.setGeometry(800, 500, 300, 400)
+
+        # connect to line
+        self.candidate_table_widget.table_view.clicked.connect(self.view_clicked)
 
 
 def run_with_validator(

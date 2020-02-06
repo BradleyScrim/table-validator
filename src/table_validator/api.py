@@ -91,45 +91,6 @@ def _consume_parsed_template(rules: Rules) -> Tuple[Mapping[int, Mapping[int, Li
 
 
 
-def old_validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
-    """Validate a candidate using a given template."""
-    rules, repeats = _consume_parsed_template(parse_template(template))
-
-    current_row_index = 0
-
-    errors = []
-
-    while current_row_index <= len(candidate):
-        current_row_rules = rules.get(current_row_index)
-        if current_row_rules is None:
-            current_row_index += 1
-            continue
-
-        current_column_index = 0
-        try:
-            current_row = candidate[current_row_index]
-        except IndexError:
-            print('current row index', current_row_index)
-            raise
-
-        while current_column_index <= len(current_row):
-            validators = current_row_rules.get(current_column_index)
-            if validators is None:
-                current_column_index += 1
-                continue
-
-            for validator in validators:
-                print("§ VALIDATOR %s",validator)
-                (v,e) = validator.validate(candidate[current_row_index][current_column_index])
-                if(v):
-                    continue
-                else:
-                    errors.append(e)
-
-            current_column_index += 1
-        current_row_index += 1
-    return (len(errors)==0),errors
-
 def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[bool,List[Any]]:
     """Validate a candidate using a given template."""
     parse_result = parse_template(template)
@@ -162,30 +123,7 @@ def validate(template: List[List[Any]], candidate: List[List[Any]]) -> Tuple[boo
 
     return (len(errors)==0),errors
 
-    # passed = True
-    # row_offset = 0
-    #
-    # for rule in rules:
-    #     if isinstance(rule, list):
-    #         # multiple validations
-    #         for validator, row, column in rule:
-    #             if not validator(candidate, row, column):
-    #                 print(f'failed at ({row}, {column}, {candidate[row][column]}: {validator}')
-    #                 passed = False
-    #                 break
-    #     elif isinstance(rule, str):
-    #         pass  # keep going until one row fails
-    #         inner_passed = True
-    #         while inner_passed:
-    #             break
-    #
-    #     elif not rule(candidate, row, column):
-    #         print(f'failed at ({row}, {column}, {candidate[row][column]}: {validator}')
-    #         passed = False
-    #
-    # return passed
-
-
+# TODO: be more general about file formats
 def parse_tsv(file: TextIO) -> List[List[str]]:
     """Parse a TSV file into a list of lists of strings."""
     return [
