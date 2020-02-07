@@ -56,7 +56,7 @@ class CandidateTableModel(QAbstractTableModel):
         if role == Qt.DisplayRole:
 
             if column==0:
-                return self.__data[row].get_formatted_location()
+                return self.__data[row].get_formatted_excel_location()
             elif column==1:
                 return self.__data[row].actual_value
             elif column==2:
