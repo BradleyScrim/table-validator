@@ -60,13 +60,19 @@ def parse_template(template) -> Rules:
 
                 # TODO: here we have to create the right NEW validators
                 if command.startswith('INT'):
-                    returnValue.append(v.MandatorySheetValidator(i,j))
                     returnValue.append(v.IntTypeSheetValidator(i, j))
                 elif command.startswith('FLOAT'):
-                    returnValue.append(v.MandatorySheetValidator(i, j))
                     returnValue.append(v.FloatTypeSheetValidator(i, j))
                 elif command.startswith('STR'):
                     returnValue.append(v.MandatorySheetValidator(i, j))
+                elif command.startswith('CHEBI'):
+                    returnValue.append(v.ChebiSheetValidator(i, j))
+                elif command.startswith('KEGG'):
+                    returnValue.append(v.KeggSheetValidator(i, j))
+
+                returnValue.append(v.MandatorySheetValidator(i,j))
+
+
                 #elif
                 #    True
                     #command.startswith('REPEAT_ROW'):
