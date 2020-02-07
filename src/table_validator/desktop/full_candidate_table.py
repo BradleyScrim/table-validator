@@ -51,6 +51,8 @@ class FullCandidateTableModel(QAbstractTableModel):
             return None
         if orientation == Qt.Horizontal:
             return xlsxwriter.utility.xl_col_to_name(section)
+        if orientation == Qt.Vertical:
+            return section+1
         else:
             return "{}".format(section)
 
@@ -112,4 +114,3 @@ class FullCandidateTableWidget(QWidget):
         # Set the layout to the QWidget
         self.setLayout(self.main_layout)
 
-                # select rows
