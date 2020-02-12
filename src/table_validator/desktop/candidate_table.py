@@ -104,3 +104,6 @@ class CandidateTableWidget(QWidget):
         self.table_view.setSelectionBehavior(QTableView.SelectRows)
         # Set the layout to the QWidget
         self.setLayout(self.main_layout)
+
+    def defineTableClickedListener(self,fkt):
+        self.table_view.clicked.connect(fkt)
