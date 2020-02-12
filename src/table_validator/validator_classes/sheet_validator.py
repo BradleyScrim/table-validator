@@ -7,6 +7,7 @@ this file contains the basic construct for validation purpose
 - SheetValidator - base class for the validation logic
 - SheetError - base class for the validator error object
 """
+import xlsxwriter
 from abc import ABC,abstractclassmethod
 
 class LocationProvider(ABC):
@@ -29,6 +30,9 @@ class LocationProvider(ABC):
 
     def get_location(self) -> (int,int):
         return self.__row,self.__column
+    
+    def get_excel_location(self) -> (str,int):
+        return xlsxwriter.utility.xl_col_to_name(self.__column), self.__row+1
 
 class SheetError(LocationProvider):
     """the abstract super class of all validation errors
@@ -52,6 +56,10 @@ class SheetError(LocationProvider):
     def get_formatted_location(self):
         """returns a formatted version of the errors location, i.e. '5, 42'"""
         return "%d, %d" %(self.row, self.column)
+
+    def get_formatted_excel_location(self):
+        """returns a formatted version of the errors location, i.e. '5, 42'"""
+        return "%s%d" %(self.get_excel_location())
 
     def get_formatted_full_error_message(self):
         """returns the location and message, pre-formatted for terminal output"""
